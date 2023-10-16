@@ -6,10 +6,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 import string
+import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 from wordcloud import WordCloud
+
+
+nltk.download('punkt')
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
@@ -104,6 +108,43 @@ contractions = {
 " n ": " and "}
 
 
+def processing_data(text):
+    
+    text = text.lower()
+    
+    for key in contractions.keys():
+            value = contractions[key]
+            text = text.replace(key,value)
+            
+    text = re.sub(r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', '', text)
+    
+    text = re.sub(r'([a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)', '', text)
+    
+    text = re.sub(r'\s+', ' ', text)
+    
+    text = word_tokenize(text)
+
+    y = []
+    for i in text:
+        if i.isalnum():
+            y.append(i)
+
+    text = y.copy()
+    y.clear()
+
+    for i in text:
+        if (i not in stopwords.words("english")) and (i not in string.punctuation ):
+            y.append(i)
+
+    text = y.copy()
+    y.clear()
+
+    for i in text:
+        y.append(ps.stem(i))
+
+    return " ".join(y)
+
+
 nav = st.sidebar.radio(
     "Navigation", ["About The Project", "Dataset Description","Make Prediction", "Key Insights"])
 
@@ -161,43 +202,7 @@ elif nav == "Make Prediction":
     text = st.text_area("Enter review of your favourite movie:")
 
     if st.button("Submit"):
-
-        def processing_data(text):
-    
-            text = text.lower()
-            
-            for key in contractions.keys():
-                    value = contractions[key]
-                    text = text.replace(key,value)
-                    
-            text = re.sub(r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', '', text)
-            
-            text = re.sub(r'([a-zA-Z0-9+._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)', '', text)
-            
-            text = re.sub(r'\s+', ' ', text)
-            
-            text = word_tokenize(text)
-
-            y = []
-            for i in text:
-                if i.isalnum():
-                    y.append(i)
-
-            text = y.copy()
-            y.clear()
-
-            for i in text:
-                if (i not in stopwords.words("english")) and (i not in string.punctuation ):
-                    y.append(i)
-
-            text = y.copy()
-            y.clear()
-
-            for i in text:
-                y.append(ps.stem(i))
-
-            return " ".join(y)
-            
+        
         text = processing_data(text)
 
         text = cv.transform([text]).toarray()
