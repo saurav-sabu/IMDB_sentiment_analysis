@@ -13,7 +13,7 @@ from wordcloud import WordCloud
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-df = pd.read_csv(r"data\Total_10000_records.csv")
+df = pd.read_csv("data\\Total_10000_records.csv")
 
 
 model_bnb = pickle.load(open("model\Count_Vectorizer\model_cv_bnb.pkl", "rb"))
