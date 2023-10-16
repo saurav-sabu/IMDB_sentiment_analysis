@@ -14,6 +14,7 @@ from wordcloud import WordCloud
 
 
 nltk.download('punkt')
+nltk.download('stopwords')
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
