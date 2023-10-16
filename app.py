@@ -16,7 +16,7 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 df = pd.read_csv("Total_10000_records.csv")
 
 
-model_bnb = pickle.load(open("model\Count_Vectorizer\model_cv_bnb.pkl", "rb"))
+model_bnb = pickle.load(open(r"model\Count_Vectorizer\model_cv_bnb.pkl", "rb"))
 cv = pickle.load(open("cv.pkl", "rb"))
 
 ps = PorterStemmer()
