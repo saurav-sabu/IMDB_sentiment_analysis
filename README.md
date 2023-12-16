@@ -1,4 +1,4 @@
-# IMDb Sentiment Analysis Project
+# IMDB Sentiment Analysis Project
 
 ## Overview
 
